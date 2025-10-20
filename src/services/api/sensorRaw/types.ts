@@ -1,0 +1,20 @@
+export class SensorRaw {
+    id: number;
+    teststationId: number;
+    rfid: string;
+    size: string;
+    orientation: string;
+    sensor1: Float32Array;
+    sensor2: Float32Array;
+    sensor3: Float32Array;
+    sensor4: Float32Array;
+    sensor5: Float32Array;
+    sensor6: Float32Array;
+    sensor7: Float32Array;
+    r_temp: Float32Array;
+    r_fix: Float32Array;
+    temperature: Float32Array;
+    testDuration: number;
+    status: boolean;
+    timeStamp: Date;
+  };
