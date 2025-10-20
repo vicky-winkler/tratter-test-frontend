@@ -120,19 +120,19 @@ onUnmounted(() => {
 })
 
 onMounted(() => {
-    if (!connection || connection.readyState === WebSocket.CLOSED) {
-        establishConnection()
-    }
+    // if (!connection || connection.readyState === WebSocket.CLOSED) {
+    //     establishConnection()
+    // }
 
-    frontEndCommand(connection, FrontEndCommand.LoginView);
-    console.log("notified backend about new view - login " + FrontEndCommand.LoginView);
-    Keyboard.init();
+    // frontEndCommand(connection, FrontEndCommand.LoginView);
+    // console.log("notified backend about new view - login " + FrontEndCommand.LoginView);
+    // Keyboard.init();
 
     // storageFull.value = true;
     // localStorage.setItem("authToken", true);
     // localStorage.setItem("adminToken", true);
     //router.push('mainScreenView');
-    // router.push('qualitySingleCellView');
+    router.push('qualitySingleCellView');
 })
 
 

@@ -123,12 +123,6 @@ const finalResult = ref(false);
 onMounted(() => {
   // Send View Command
 
-  if (connection) {
-    frontEndCommand(connection, FrontEndCommand.TestingView);
-    console.log("Testing View - listen Websocket");
-    listenToWebsocket();
-  }
-
   store.testStationInitializing = true
   store.testRunning = false;
 
@@ -136,7 +130,7 @@ onMounted(() => {
 
   Keyboard.init()
 
-  // testQualitySubComponents();
+  testQualitySubComponents();
 
   reset();
 
@@ -171,165 +165,6 @@ onUnmounted(() => {
 
 
 
-
-
-
-
-// listen to websocket 8585
-function listenToWebsocket() {
-
-  console.log("listen web socket");
-
-  connection.onmessage = (event) => {
-    const dataBuffer = Buffer.from(event.data);
-    decoder.decode(dataBuffer);
-  };
-}
-
-// decode message
-const decoder = new slip.Decoder({
-  onMessage: (msg) => processData(decodeMessage(msg)),
-  maxMessageSize: 209715200,
-  bufferSize: 2048,
-});
-
-
-// interpret Websocket message and evaluate/push to child component!!
-function processData(decodedOscMessage){
-
-  // Extract CommandType from Address
-  const commandType = decodedOscMessage.address.split('/')[2]
-
-  // CommandID
-  const commandID = decodedOscMessage.args[1].value;
-
-
-  // DATA
-  if(commandType === "DATA"){
-      
-    // if DATA + Instruction
-    if(commandID === FrontEndCommand.Instructions){
-      console.log("Instructions");
-      setInstruction(decodedOscMessage);
-    }
-    // if DATA + MeasurementData -> Chart
-    else if(commandID === BackEndCommand.QualitySingleMeasurementData){
-
-      qualityChartComponentRef.value.processMessage(decodedOscMessage);
-    }
-    // if DATA + TargetPressure
-    else if(commandID === BackEndCommand.QualitySingleTargetPressure){
-      store.testRunning = true;
-      disabledBackToMenu.value = true;
-      console.log("Target Pressure: " + convertByteToInt(decodedOscMessage.args[5].value));
-      qualityTableComponentRef.value.setTargetPressure(convertByteToInt(decodedOscMessage.args[5].value));
-    }
-    // if DATA + LoadcellResult / CalculatedResult
-    else if(commandID === BackEndCommand.QualitySingleCalculatedPressure){
-      disabledBackToMenu.value = false;
-      console.log("LoadCell Calculated Pressure: "+ convertByteToInt(decodedOscMessage.args[5].value));
-      qualityTableComponentRef.value.setLoadCellResult(convertByteToInt(decodedOscMessage.args[5].value));
-      qualityTableComponentRef.value.activateManualInput();
-    }
-    // if DATA + FinalResult
-    else if(commandID === BackEndCommand.QualitySingleFinalResult){
-      store.testRunning = false;
-      setFinalResult(decodedOscMessage);
-
-    }
-  }
-
-
-  // CMD
-  else if(commandType === "CMD"){
-    if(commandID === BackEndCommand.QualitySingleInitTesting){
-      
-    }
-    // Lightbarrier Reset
-    else if(commandID === FrontEndCommand.LightBarrier){
-      // clear chart and 
-      console.log("Light Barrier...");
-      keepRed.value = true;
-
-    }
-  }
-  
-  // ACK
-  else if(commandType === "ACK"){
-    if(commandID === BackEndCommand.QualitySingleManualInputFrontEnd){
-      if(qualitySingleCellStore.currentIndex < 10){
-        qualitySingleCellStore.currentIndex++;
-      }
-      console.log("ACK currentIndex: " + qualitySingleCellStore.currentIndex);
-    }
-    // Lightbarrier (OFF)
-    else if(commandID === FrontEndCommand.LightBarrier){
-      overallStore.Lightbarrier = true;
-      if(keepRed){
-        overallStore.lightBarrierColorId = 2;
-      }
-      else if(store.testRunning){
-        // remains RED
-        overallStore.lightBarrierColorId = 2;
-      }
-      else{
-        // GREEN
-        overallStore.lightBarrierColorId = 1;
-      }
-      
-    }
-  }
-
-  // NACK
-  else if(commandType === "NACK"){
-    if(commandID === BackEndCommand.QualitySingleManualInputFrontEnd){
-      // TODO allow input field to be rewritten??
-      console.log("NACK currentIndex: " + qualitySingleCellStore.currentIndex);
-    }
-
-    // Lightbarrier (ON)
-    else if(commandID === FrontEndCommand.LightBarrier){
-      overallStore.Lightbarrier = true;
-      if(keepRed){
-        overallStore.lightBarrierColorId = 2;
-      }
-      else if(store.testRunning){
-        // RED => issue
-        overallStore.lightBarrierColorId = 2;
-      }
-      else{
-        // WHITE (not an issue)
-        overallStore.lightBarrierColorId = 0;
-      }
-    }
-  }
-
-  // ERR => TestingComponent
-  else if(commandType === "ERR"){
-    console.log("error");
-    if (decodedOscMessage.args[1].value === -1) { 
-      store.errorActive = false;
-      store.errorID = -1
-      store.errorMessage = ""
-    } 
-    else {
-      store.errorActive = true;
-      store.errorID = decodedOscMessage.args[1].value
-      store.errorMessage = decodedOscMessage.args[2].value
-      console.log("error active")
-
-      // stop test and reset
-      store.testRunning = false;
-      reset();
-    }
-  }
-
-
-  else {
-    console.log("ELSE!!");
-
-  }
-}
 
 
 
@@ -413,11 +248,6 @@ function onUpdateManualInput(value) {
 // submits to backend and closes keyboard
 function onSubmitManualInput(value) {
   console.log("Submitting manual input:", value);
-
-  const connectionTest = getConnection();
-  if (connectionTest && connectionTest.readyState === WebSocket.OPEN) {
-    backEndSettingsData(connectionTest, BackEndCommand.QualitySingleManualInputFrontEnd, OscDataType.Int, value);
-  }
 
   Keyboard.close();
 }

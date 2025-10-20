@@ -21,7 +21,7 @@
   <div class="pl-12 pr-12 pt-6 card ">
     <div class="flex justify-center gap-6">
       <!-- Button SETTINGS / SETUP -->
-      <router-link v-if="isAdmin === 'true'" style="width: 33%;" :to="{ name: 'setupTestStationView' }">
+      <router-link style="width: 33%;" :to="{ name: 'setupTestStationView' }">
         <Button 
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-none text-center"
           style="border-radius: 0px; height: 70vh; width: 100%;" label="Delete" severity="info">
@@ -33,7 +33,7 @@
       </router-link>
 
       <!-- Button TESTing View (if else depending on current testmode-->
-      <router-link v-if="testConfigStore.testModeID === 1" style="width: 33%;" :to="{ name: 'testingSensorView' }">
+      <router-link style="width: 33%;" :to="{ name: 'testingSensorView' }">
         <Button 
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold  rounded-none text-center"
           style="border-radius: 0px; height: 70vh;  width: 100%;" label="Delete" severity="info">
@@ -43,7 +43,7 @@
           </div>
         </Button>
       </router-link>
-      <router-link v-else-if="testConfigStore.testModeID === 2" style="width: 33%;" :to="{ name: 'testingBootView' }">
+      <router-link style="width: 33%;" :to="{ name: 'testingBootView' }">
         <Button 
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold  rounded-none text-center"
           style="border-radius: 0px; height: 70vh;  width: 100%;" label="Delete" severity="info">
@@ -53,7 +53,7 @@
           </div>
         </Button>
       </router-link>
-      <router-link v-else-if="testConfigStore.testModeID === 3" style="width: 33%;" :to="{ name: 'testingConditioningView' }">
+      <router-link  style="width: 33%;" :to="{ name: 'testingConditioningView' }">
         <Button 
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold  rounded-none text-center"
           style="border-radius: 0px; height: 70vh;  width: 100%;" label="Delete" severity="info">
@@ -63,7 +63,7 @@
           </div>
         </Button>
       </router-link>
-      <router-link v-else-if="testConfigStore.testModeID === 4" style="width: 33%;" :to="{ name: 'testingRecalibrationView' }">
+      <router-link style="width: 33%;" :to="{ name: 'testingRecalibrationView' }">
         <Button 
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold  rounded-none text-center"
           style="border-radius: 0px; height: 70vh;  width: 100%;" label="Delete" severity="info">
@@ -73,7 +73,7 @@
           </div>
         </Button>
       </router-link>
-      <router-link v-else-if="testConfigStore.testModeID === 5" style="width: 33%;" :to="{ name: 'testingStepRecalView' }">
+      <router-link style="width: 33%;" :to="{ name: 'testingStepRecalView' }">
         <Button 
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold  rounded-none text-center"
           style="border-radius: 0px; height: 70vh;  width: 100%;" label="Delete" severity="info">
@@ -83,7 +83,7 @@
           </div>
         </Button>
       </router-link>
-      <router-link v-else-if="testConfigStore.testModeID === 6" style="width: 33%;" :to="{ name: 'qualitySingleCellView' }">
+      <router-link style="width: 33%;" :to="{ name: 'qualitySingleCellView' }">
         <Button 
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold  rounded-none text-center"
           style="border-radius: 0px; height: 70vh;  width: 100%;" label="Delete" severity="info">
