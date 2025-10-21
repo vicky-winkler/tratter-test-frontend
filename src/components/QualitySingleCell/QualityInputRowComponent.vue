@@ -14,7 +14,8 @@
             :disabled="manualInputDisabled" 
             size="small"
             @input="onManualInput"
-            @focus="emit('open-keyboard', manualInput.value, onKeyboardInput, onKeyboardClose)"
+            @focus="emit('open-keyboard', manualInput, onKeyboardInput, onKeyboardClose)"
+            
              />
 
          <!-- Submit Button -->

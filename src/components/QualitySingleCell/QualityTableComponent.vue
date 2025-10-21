@@ -47,12 +47,14 @@
   function setTargetPressure(targetPressure){
     qualitySingleCellStore.targetPressures[qualitySingleCellStore.currentIndex] = targetPressure;
 
+
   }
 
 
     // set LoadcellResult
   function setLoadCellResult(loadcellResult){
     qualitySingleCellStore.loadCellResults[qualitySingleCellStore.currentIndex] = loadcellResult;
+
 
   }
 
@@ -63,6 +65,11 @@
 
   function activateManualInput(){
     qualitySingleCellStore.manualInputDisabled[qualitySingleCellStore.currentIndex] = false;
+
+  }
+
+  function deactivateManualInput(){
+    qualitySingleCellStore.manualInputDisabled[qualitySingleCellStore.currentIndex] = true;
   }
 
 
@@ -72,6 +79,7 @@ defineExpose({
     setLoadCellResult,
     resetQualityTable,
     activateManualInput,
+    deactivateManualInput
 });
 
 

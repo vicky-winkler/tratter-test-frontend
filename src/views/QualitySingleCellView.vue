@@ -249,6 +249,16 @@ function onUpdateManualInput(value) {
 function onSubmitManualInput(value) {
   console.log("Submitting manual input:", value);
 
+  //TEMP BEGIN
+  qualityTableComponentRef.value.deactivateManualInput();
+  qualitySingleCellStore.currentIndex++;
+  
+  qualityTableComponentRef.value.setTargetPressure(qualitySingleCellStore.currentIndex*1000);
+  qualityTableComponentRef.value.setLoadCellResult(qualitySingleCellStore.currentIndex*1001);
+  qualityTableComponentRef.value.activateManualInput();
+  //TEMP END
+
+
   Keyboard.close();
 }
 
@@ -352,11 +362,10 @@ const Keyboard = {
           break;
 
         case "done":
-          keyElement.classList.add("keyboard__key--wide", "keyboard__key--dark", "pi", "pi-check");
+          keyElement.classList.add("keyboard__key--wide", "keyboard__key--dark", "pi", "pi-arrow-down");
 
           keyElement.addEventListener("click", () => {
             this.close();
-            this._triggerEvent("onclose");
           });
 
           break;
@@ -481,9 +490,10 @@ const Keyboard = {
   width: 100%;
   padding: 5px 0;
   background: #004134;
-  box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 50px rgba(0,0,0,0.5);
   user-select: none;
   transition: bottom 0.4s;
+  z-index: 9999; /* <-- add this */
 }
 
 .keyboard--hidden {
@@ -547,6 +557,6 @@ const Keyboard = {
 }
 
 .keyboard__key--dark {
-  background: #34d399
+  background: #e0b778
 }
 </style>

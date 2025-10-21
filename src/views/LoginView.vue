@@ -115,8 +115,8 @@ const errorColor = ref('#dc2626');
 
 
 onUnmounted(() => {
-    document.body.removeChild(keyboard);
-    connection.close();
+    //document.body.removeChild(keyboard);
+    //connection.close();
 })
 
 onMounted(() => {
